@@ -1,0 +1,60 @@
+django-kungfu
+=============
+
+``django-kungfu`` provides the ability to set-up the Django configuration
+mechanism so it's fairly easy to integrate development or deployment-related 
+settings overrides.
+
+The idea came after I used for a while the beatiful configuration system 
+implemented in `Flask
+<http://flask.pocoo.org/>`_. In fact, the majority of the code was inspired
+by the Flask implementation located `here
+<https://github.com/mitsuhiko/flask/blob/master/flask/config.py>`_.
+
+Usage by example
+================
+
+The integration with your Django project is fairly easy and depends on your
+preferences. One possible set-up could look like this::
+
+    # At the bottom of your/settings.py file just add the following lines
+    from django_kungfu import Configurator
+    config = Configurator(locals())
+    config.from_pyfile(os.path.join(os.path.dirname(__file__), 'dev_settings.py'))
+    config.from_envvar('DJANGO_SETTINGS_OVERRIDE')
+
+In short, this is what happens when the django settings file is loaded:
+# if the dev_settings.py file is found in the same directory as the settings file,
+all the upper-case constants are loaded into local context overriding the existing
+ones
+# if the DJANGO_SETTINGS_OVERRIDE environment variable is set and is pointing to
+a valid configuration file, that configuration file is loaded in the same way
+
+By default, if the specified files or environment variables are not found or
+are not valid, the configurator will fail silently. This is useful for example
+when using development settings which are not available in a production system 
+and we want to keep a single settings file as a configuration entry point.
+
+If you want to enforce the presence of a particular configuration file or
+environment variable you can use ``silent=True`` with the respective
+methods.
+
+Having this configuration, you can easily set-up a production environment
+by setting the appropriate environment variable in you production wsgi file::
+
+    # prod.wsgi
+    import os
+
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "myproject.settings")
+    os.environ.setdefault("DJANGO_SETTINGS_OVERRIDE",
+                          os.path.expanduser("~/etc/myproject/prod_settings.py"))
+
+    from django.core.wsgi import get_wsgi_application
+    application = get_wsgi_application()
+
+Why kungfu?
+===========
+
+This name was selected because kungfu pronounced in my natal language (a regional 
+dialect of Romanian) sounds similar to config (confu). And of course my sympathy for martial 
+arts, and especially for kung fu, brought a few points.
