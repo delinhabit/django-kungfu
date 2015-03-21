@@ -20,12 +20,13 @@ import os
 
 
 class Configurator(object):
-    """Wrap a dictionary container and provide the ability to load configuration
+    """
+    Wrap a dictionary container and provide the ability to load configuration
     options from files or any kind of objects.
 
-    Regardless of the method you use to load the configuration options, only the
-    uppercase keys ar loaded into the settings container.
-    
+    Regardless of the method you use to load the configuration options, only
+    the uppercase keys ar loaded into the settings container.
+
     :param container: the container where the loaded configuration options are
                       stored
     :type container: dict
@@ -73,8 +74,9 @@ class Configurator(object):
         module = imp.new_module('config')
         module.__file__ = filename
         try:
-            execfile(filename, module.__dict__)
-        except IOError, e:
+            exec(compile(open(filename).read(), filename, 'exec'),
+                 module.__dict__)
+        except IOError as e:
             if silent and e.errno in (errno.ENOENT, errno.EISDIR):
                 return False
             e.strerror = 'Unable to load configuration file (%s)' % e.strerror
