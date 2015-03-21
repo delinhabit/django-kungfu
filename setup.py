@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='django-kungfu',
-    version='0.1.1',
+    version='0.2',
     description=('A Flasky approach to distributed Django configuration'),
     long_description=open('README').read(),
     keywords='django settings overrides flasky',
