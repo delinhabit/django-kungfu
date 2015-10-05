@@ -5,7 +5,7 @@ django-kungfu
 mechanism so it's fairly easy to integrate development or deployment-related 
 settings overrides.
 
-The idea came after I used for a while the beatiful configuration system 
+The idea came after I used for a while the beautiful configuration system 
 implemented in `Flask
 <http://flask.pocoo.org/>`_. In fact, the majority of the code was inspired
 by the Flask implementation located `here
